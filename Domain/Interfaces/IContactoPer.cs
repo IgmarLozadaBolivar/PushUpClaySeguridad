@@ -1,7 +1,7 @@
 using Domain.Entities;
 namespace Domain.Interfaces;
 
-public interface IContratoPer : IGeneric<ContactoPer>
+public interface IContactoPer : IGeneric<ContactoPer>
 {
 
 }

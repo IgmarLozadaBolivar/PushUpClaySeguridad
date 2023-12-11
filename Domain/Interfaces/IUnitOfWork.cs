@@ -14,7 +14,7 @@ public interface IUnitOfWork
     ITipoPersona TipoPersonas { get; }
     ICategoriaPer CategoriaPers { get; }
     IContrato Contratos { get; }
-    IContratoPer GetContratoPers { get; }
+    IContactoPer ContactoPers { get; }
     ITurno Turnos { get; }
     IEstado Estados { get; }
     IDirPersona DirPersonas { get; }
