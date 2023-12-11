@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public partial class Tipocontacto
+public partial class TipoContacto
 {
     public int Id { get; set; }
-
     public string Descripcion { get; set; }
-
-    public virtual ICollection<Contactoper> Contactopers { get; set; } = new List<Contactoper>();
+    public virtual ICollection<ContactoPer> Contactopers { get; set; } = new List<ContactoPer>();
 }

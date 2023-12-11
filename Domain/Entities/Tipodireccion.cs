@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public partial class Tipodireccion
+public partial class TipoDireccion
 {
     public int Id { get; set; }
-
     public string Descripcion { get; set; }
-
-    public virtual ICollection<Dirpersona> Dirpersonas { get; set; } = new List<Dirpersona>();
+    public virtual ICollection<DirPersona> Dirpersonas { get; set; } = new List<DirPersona>();
 }
