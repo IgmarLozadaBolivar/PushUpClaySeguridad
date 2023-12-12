@@ -128,4 +128,33 @@ public class PersonaRepo : Generic<Persona>, IPersona
 
         return resultadoFinal;
     }
+
+    public async Task<IEnumerable<object>> EmpleadosQueVivenEnGironYPiedecuesta()
+    {
+        var mensaje = "listado de clientes que viven en Bucaramanga".ToUpper();
+
+        var consulta = from c in _context.Personas
+                       join e in _context.Tipopersonas on c.IdTipoPersona equals e.Id
+                       join ci in _context.Ciudads on c.IdCiudad equals ci.Id
+                       join cp in _context.Categoriapers on c.IdCategoria equals cp.Id
+                       where e.Descripcion == "Empleado" && ci.NombreCiu == "Giron" || ci.NombreCiu == "Piedecuesta"
+                       select new
+                       {
+                           IdEmpleado = c.Id,
+                           IdUnicoPersona = c.IdPersona,
+                           NombreDelEmpleado = c.Nombre,
+                           TipoDeEmpleado = e.Descripcion,
+                           CategoriaDeEmpleado = cp.NombreCat,
+                           NombreCiudad = ci.NombreCiu,
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 }

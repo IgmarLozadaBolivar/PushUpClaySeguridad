@@ -127,4 +127,13 @@ public class PersonaController : BaseApiController
         var data = await unitOfWork.Personas.ClientesQueVivenEnBucaramanga();
         return mapper.Map<List<object>>(data);
     }
+
+    [HttpGet("EmpleadosQueVivenEnGironYPiedecuesta")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> EmpleadosQueVivenEnGironYPiedecuesta()
+    {
+        var data = await unitOfWork.Personas.EmpleadosQueVivenEnGironYPiedecuesta();
+        return mapper.Map<List<object>>(data);
+    }
 }
