@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 6/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 7/7` ✅ <br>
 
 </details>
 
@@ -331,52 +331,10 @@
 <img src="./assets/controllers.png">
 
 ### 2. Diagram-Database: Clay Security:
-<img src="./assets/database_diagram.png">
+<img src="./assets/claysecurity.png">
 
 ### 3. Diagram-Tables JWT: User-Rol-RefreshToken:
 <img src="./assets/diagram_tables_jwt.png">
-
-### 4. Data-Table: Pais:
-<img src="./assets/table_pais.png">
-
-### 5. Data-Table: Departamento:
-<img src="./assets/table_departamento.png">
-
-### 6. Data-Table: Ciudad:
-<img src="./assets/table_ciudad.png">
-
-### 7. Data-Table: Persona:
-<img src="./assets/table_persona.png">
-
-### 8. Data-Table: Tipo Persona:
-<img src="./assets/table_tipo_persona.png">
-
-### 9. Data-Table: Categoria Persona:
-<img src="./assets/table_categoria_persona.png">
-
-### 10. Data-Table: Direccion Persona:
-<img src="./assets/table_direccion_persona.png">
-
-### 11. Data-Table: Tipo Direccion:
-<img src="./assets/table_tipo_direccion.png">
-
-### 12. Data-Table: Contacto Persona:
-<img src="./assets/table_contacto_persona.png">
-
-### 13. Data-Table: Tipo Contacto:
-<img src="./assets/table_tipo_contacto.png">
-
-### 14. Data-Table: Contrato:
-<img src="./assets/table_contrato.png">
-
-### 15. Data-Table: Programacion:
-<img src="./assets/table_programacion.png">
-
-### 16. Data-Table: Turno:
-<img src="./assets/table_turno.png">
-
-### 17. Data-Table: Estado:
-<img src="./assets/table_estado.png">
 
 <h4>Pasos a Seguir:</h4>
 <p>Usuarios por defecto</p>
@@ -395,8 +353,7 @@
 <img src="./assets/token.png"><br>
 
 <p>Consultas especiales de Usuarios & Roles</p>
-<img src="./assets/especiales
-.png"><br>
+<img src="./assets/especiales.png"><br>
 
 ## Authors and collaborators:
 - Powered by <a href="https://github.com/IgmarLozadaBolivar">Igmar Lozada</a><br>
