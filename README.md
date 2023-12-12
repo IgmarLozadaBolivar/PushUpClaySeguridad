@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 4/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 6/7` 👷‍♂️ <br>
 
 </details>
 
@@ -206,7 +206,7 @@
 ```
 **Method**: `GET`
 
-**🔰 Query 5: Listar todos los `empleados` que vivan en `Giron` y `Piedecuesta`. 👷‍♂️**: `http://localhost:5106/api/Persona/EmpleadosQueVivenEnGiron&Piedecuesta`
+**🔰 Query 5: Listar todos los `empleados` que vivan en `Giron` y `Piedecuesta`. ✅**: `http://localhost:5106/api/Persona/EmpleadosQueVivenEnGiron&Piedecuesta`
 ```sql
 
 
@@ -241,9 +241,50 @@
 ```
 **Method**: `GET`
 
-**🔰 Qeury 6: Listar todos los `clientes` que tengan `mas de 5 años de antiguedad`. 👷‍♂️**: `http://localhost:5106/api/Persona/ClientesCon5AñosDeAntiguedad`
+**🔰 Query 6: Listar todos los `clientes` que tengan `mas de 5 años de antiguedad`. ✅**: `http://localhost:5106/api/Persona/ClientesCon5AñosDeAntiguedad`
 ```sql
-    
+    SELECT `c`.`Id`, `c`.`FechaContrato`, `c`.`FechaFin`, `c`.`IdCliente`, `c`.`IdEmpleado`, `c`.`IdEstado`, `p`.`Id`, `p`.`DateReg`, `p`.`IdCategoria`, `p`.`IdCiudad`, `p`.`IdPersona`, `p`.`IdTipoPersona`, `p`.`Nombre`, `t`.`Id`, `t`.`Descripcion`
+      FROM `Contrato` AS `c`
+      INNER JOIN `Persona` AS `p` ON `c`.`IdCliente` = `p`.`Id`
+      INNER JOIN `TipoPersona` AS `t` ON `p`.`IdTipoPersona` = `t`.`Id`
+      WHERE `t`.`Descripcion` = 'Cliente'
+
+    public async Task<IEnumerable<object>> ClientesCon5AñosDeAntiguedad()
+    {
+        var mensaje = "listado de clientes que tienen 5 años de antigüedad".ToUpper();
+
+        var consulta = from c in _context.Contratos
+                       join emp in _context.Personas on c.IdCliente equals emp.Id
+                       join e in _context.Tipopersonas on emp.IdTipoPersona equals e.Id
+                       where e.Descripcion == "Cliente"
+                       select new
+                       {
+                           Contrato = c,
+                           Persona = emp,
+                           TipoPersona = e
+                       };
+
+        var result = await consulta.ToListAsync();
+
+        var filteredResult = result
+            .Where(ti => ti.TipoPersona.Descripcion == "Cliente" && ti.Contrato.FechaContrato.HasValue)
+            .AsEnumerable()
+            .Where(ti => (DateTime.Now - ti.Contrato.FechaContrato.Value.ToDateTime(TimeOnly.MinValue)).TotalDays / 365.25 >= 5)
+            .Select(ti => new
+            {
+                IdCliente = ti.Persona.Id,
+                IdUnicoPersona = ti.Persona.IdPersona,
+                NombreDelCliente = ti.Persona.Nombre
+            })
+            .ToList();
+
+        var resultadoFinal = new List<object>
+    {
+        new { Msg = mensaje, DatosConsultados = filteredResult }
+    };
+
+        return resultadoFinal;
+    }
 ```
 **Method**: `GET`
 
