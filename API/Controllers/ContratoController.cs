@@ -100,4 +100,13 @@ public class ContratoController : BaseApiController
         await unitOfWork.SaveAsync();
         return NoContent();
     }
+
+    [HttpGet("ClientesCon5AñosDeAntiguedad")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> ClientesCon5AñosDeAntiguedad()
+    {
+        var data = await unitOfWork.Contratos.ClientesCon5AñosDeAntiguedad();
+        return mapper.Map<List<object>>(data);
+    }
 }
