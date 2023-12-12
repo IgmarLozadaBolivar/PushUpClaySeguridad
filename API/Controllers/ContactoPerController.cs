@@ -100,4 +100,13 @@ public class ContactoPerController : BaseApiController
         await unitOfWork.SaveAsync();
         return NoContent();
     }
+
+    [HttpGet("ContactoEmpleadoVigilante")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> ContactoEmpleadoVigilante()
+    {
+        var data = await unitOfWork.ContactoPers.ContactoEmpleadoVigilante();
+        return mapper.Map<List<object>>(data);
+    }
 }

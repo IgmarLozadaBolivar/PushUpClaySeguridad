@@ -45,4 +45,34 @@ public class ContactoPerRepo : Generic<ContactoPer>, IContactoPer
     
         return (totalRegistros, registros);
     }
+
+    public async Task<IEnumerable<object>> ContactoEmpleadoVigilante()
+    {
+        var mensaje = "listado de los contactos de los empleados que son vigilantes en la empresa".ToUpper();
+
+        var consulta = from c in _context.Contactopers
+                       join emp in _context.Personas on c.IdPersona equals emp.Id
+                       join e in _context.Tipopersonas on emp.IdTipoPersona equals e.Id
+                       join ci in _context.Ciudads on emp.IdCiudad equals ci.Id
+                       join cp in _context.Categoriapers on emp.IdCategoria equals cp.Id
+                       where e.Descripcion == "Empleado" && cp.NombreCat == "Vigilante"
+                       select new
+                       {
+                           IdEmpleado = emp.Id,
+                           NombreDelEmpleado = emp.Nombre,
+                           TipoDeEmpleado = e.Descripcion,
+                           CategoriaDeEmpleado = cp.NombreCat,
+                           DescripcionContacto = c.Descripcion,
+                           TipoContacto = c.IdTipoContacto
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 }
