@@ -288,9 +288,40 @@
 ```
 **Method**: `GET`
 
-**🔰 Query 7: Listar todos los `contratos` cuyo estado es `activo`. Se debe mostrar el `Nro de contrato`, el `nombre del cliente` y el `empleado que registro el contrato`. 👷‍♂️**: `http://localhost:5292/api/Pedido/ContratosActivos`
+**🔰 Query 7: Listar todos los `contratos` cuyo estado es `activo`. Se debe mostrar el `Nro de contrato`, el `nombre del cliente` y el `empleado que registro el contrato`. ✅**: `http://localhost:5106/api/Contrato/ContratosActivos`
 ```sql
-    
+    SELECT `c`.`Id` AS `NroContracto`, `p0`.`Nombre` AS `NombreDelCliente`, `p`.`Nombre` AS `NombreDelEmpleado`
+      FROM `Contrato` AS `c`
+      INNER JOIN `Persona` AS `p` ON `c`.`IdEmpleado` = `p`.`Id`
+      INNER JOIN `Persona` AS `p0` ON `c`.`IdCliente` = `p0`.`Id`
+      INNER JOIN `Estado` AS `e` ON `c`.`IdEstado` = `e`.`Id`
+      WHERE `e`.`Descripcion` = 'Activo'
+
+    public async Task<IEnumerable<object>> ContratosActivos()
+    {
+        var mensaje = "listado de contratos que se encuentran activos".ToUpper();
+
+        var consulta = from c in _context.Contratos
+                       join emp in _context.Personas on c.IdEmpleado equals emp.Id
+                       join cus in _context.Personas on c.IdCliente equals cus.Id
+                       join et in _context.Estados on c.IdEstado equals et.Id
+                       where et.Descripcion == "Activo"
+                       select new
+                       {
+                           NroContracto = c.Id,
+                           NombreDelCliente = cus.Nombre,
+                           NombreDelEmpleado = emp.Nombre
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 ```
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
