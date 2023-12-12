@@ -28,12 +28,12 @@
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
 
 ## Requerimientos funcionales 👻<br>
-🎯 Implementar control de acceso, usando JWT. ❌ <br>
-🎯 Se debe prevenir peticiones automatizadas. ❌ <br>
-🎯 Se debe implementar arquitectura DTO. ❌ <br>
-🎯 Se debe implementar patron Singleton usando unidades de trabajo. ❌ <br>
-🎯 Se debe implementar paginacion. ❌ <br>
-🎯 Se debe generar CRUD. ❌ <br>
+🎯 Implementar control de acceso, usando JWT. ✔ <br>
+🎯 Se debe prevenir peticiones automatizadas. ✔ <br>
+🎯 Se debe implementar arquitectura DTO. ✔ <br>
+🎯 Se debe implementar patron Singleton usando unidades de trabajo. ✔ <br>
+🎯 Se debe implementar paginacion. ✔ <br>
+🎯 Se debe generar CRUD. ✔ <br>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br>
 
@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 0/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 1/7` 👷‍♂️ <br>
 
 </details>
 
@@ -50,9 +50,41 @@
 ## Consultas requeridas 👨‍💻 <br>
  **Method**: `GET`
 
-**🔰 Query 1: Listar todos los `empleados` de la `empresa de seguridad` 👷‍♂️**: `http://localhost:5106/api/Empleado/ListarEmpleados`
+**🔰 Query 1: Listar todos los `empleados` de la `empresa de seguridad` ✅**: `http://localhost:5106/api/Empleado/ListarEmpleados`
 ```sql
-    
+    SELECT `p`.`Id` AS `IdEmpleado`, `p`.`IdPersona` AS `IdUnicoPersona`, `p`.`Nombre` AS `NombreDelEmpleado`, `t`.`Descripcion` AS `TipoDeEmpleado`, `p`.`IdCategoria`, `c`.`NombreCiu` AS `NombreCiudad`
+    FROM `Persona` AS `p`
+    INNER JOIN `TipoPersona` AS `t` ON `p`.`IdTipoPersona` = `t`.`Id`
+    INNER JOIN `Ciudad` AS `c` ON `p`.`IdCiudad` = `c`.`Id`
+    WHERE `t`.`Descripcion` = 'Empleado'
+
+    public async Task<IEnumerable<object>> ListarEmpleados()
+    {
+        var mensaje = "listado de empleados de la empresa".ToUpper();
+
+        var consulta = from c in _context.Personas
+                       join e in _context.Tipopersonas on c.IdTipoPersona equals e.Id
+                       join ci in _context.Ciudads on c.IdCiudad equals ci.Id
+                       where e.Descripcion == "Empleado"
+                       select new
+                       {
+                           IdEmpleado = c.Id,
+                           IdUnicoPersona = c.IdPersona,
+                           NombreDelEmpleado = c.Nombre,
+                           TipoDeEmpleado = e.Descripcion,
+                           IdCategoria = c.IdCategoria,
+                           NombreCiudad = ci.NombreCiu,
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 ```
 **Method**: `GET`
 
