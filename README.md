@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 3/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 4/7` 👷‍♂️ <br>
 
 </details>
 
@@ -170,9 +170,13 @@
 ```
 **Method**: `GET`
 
-**🔰 Query 4: Listar todos los `clientes` que vivan en la ciudad de `Bucaramanga`. 👷‍♂️**: `http://localhost:5106/api/Persona/ClientesQueVivenEnBucaramanga`
+**🔰 Query 4: Listar todos los `clientes` que vivan en la ciudad de `Bucaramanga`. ✅**: `http://localhost:5106/api/Persona/ClientesQueVivenEnBucaramanga`
 ```sql
-    
+    SELECT `p`.`Id` AS `IdCliente`, `p`.`IdPersona` AS `IdUnicoPersona`, `p`.`Nombre` AS `NombreDelCliente`, `c`.`NombreCiu` AS `NombreCiudad`
+      FROM `Persona` AS `p`
+      INNER JOIN `TipoPersona` AS `t` ON `p`.`IdTipoPersona` = `t`.`Id`
+      INNER JOIN `Ciudad` AS `c` ON `p`.`IdCiudad` = `c`.`Id`
+      WHERE (`t`.`Descripcion` = 'Cliente') AND (`c`.`NombreCiu` = 'Bucaramanga')
 
     public async Task<IEnumerable<object>> ClientesQueVivenEnBucaramanga()
     {
