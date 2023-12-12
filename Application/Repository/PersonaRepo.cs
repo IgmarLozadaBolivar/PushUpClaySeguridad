@@ -110,7 +110,6 @@ public class PersonaRepo : Generic<Persona>, IPersona
         var consulta = from c in _context.Personas
                        join e in _context.Tipopersonas on c.IdTipoPersona equals e.Id
                        join ci in _context.Ciudads on c.IdCiudad equals ci.Id
-                       join cp in _context.Categoriapers on c.IdCategoria equals cp.Id
                        where e.Descripcion == "Cliente" && ci.NombreCiu == "Bucaramanga"
                        select new
                        {
