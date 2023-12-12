@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 1/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 2/7` 👷‍♂️ <br>
 
 </details>
 
@@ -88,9 +88,43 @@
 ```
 **Method**: `GET`
 
-**🔰 Query 2: Listar todos los `empleados` que son `vigilantes`. 👷‍♂️**: `http://localhost:5106/api/Empleado/EmpleadosVigilantes`
+**🔰 Query 2: Listar todos los `empleados` que son `vigilantes`. ✅**: `http://localhost:5106/api/Persona/EmpleadosVigilantes`
 ```sql
-    
+    SELECT `p`.`Id` AS `IdEmpleado`, `p`.`IdPersona` AS `IdUnicoPersona`, `p`.`Nombre` AS `NombreDelEmpleado`, `t`.`Descripcion` AS `TipoDeEmpleado`, `c0`.`NombreCat` AS `CategoriaDeEmpleado`, `c`.`NombreCiu` AS `NombreCiudad`
+    FROM `Persona` AS `p`
+    INNER JOIN `TipoPersona` AS `t` ON `p`.`IdTipoPersona` = `t`.`Id`
+    INNER JOIN `Ciudad` AS `c` ON `p`.`IdCiudad` = `c`.`Id`
+    INNER JOIN `CategoriaPer` AS `c0` ON `p`.`IdCategoria` = `c0`.`Id`
+    WHERE (`t`.`Descripcion` = 'Empleado') AND (`c0`.`NombreCat` = 'Vigilante')
+
+    public async Task<IEnumerable<object>> ListarEmpleadosVigilantes()
+    {
+        var mensaje = "listado de empleados que son vigilantes en la empresa".ToUpper();
+
+        var consulta = from c in _context.Personas
+                       join e in _context.Tipopersonas on c.IdTipoPersona equals e.Id
+                       join ci in _context.Ciudads on c.IdCiudad equals ci.Id
+                       join cp in _context.Categoriapers on c.IdCategoria equals cp.Id
+                       where e.Descripcion == "Empleado" && cp.NombreCat == "Vigilante"
+                       select new
+                       {
+                           IdEmpleado = c.Id,
+                           IdUnicoPersona = c.IdPersona,
+                           NombreDelEmpleado = c.Nombre,
+                           TipoDeEmpleado = e.Descripcion,
+                           CategoriaDeEmpleado = cp.NombreCat,
+                           NombreCiudad = ci.NombreCiu,
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 ```
 **Method**: `GET`
 
