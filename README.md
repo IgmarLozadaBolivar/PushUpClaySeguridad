@@ -41,7 +41,7 @@
 <details>
   <summary>Ver progreso de las consultas</summary>
 
-### Consultas Totales: `Total 2/7` 👷‍♂️ <br>
+### Consultas Totales: `Total 3/7` 👷‍♂️ <br>
 
 </details>
 
@@ -128,9 +128,45 @@
 ```
 **Method**: `GET`
 
-**🔰 Query 3: Listar los `numeros de contacto` de un `empleado` que sea `vigilante`. 👷‍♂️**: `http://localhost:5106/api/Empleado/ContactoEmpleadoVigilante`
+**🔰 Query 3: Listar los `numeros de contacto` de un `empleado` que sea `vigilante`. ✅**: `http://localhost:5106/api/ContactoPer/ContactoEmpleadoVigilante`
 ```sql
-    
+    SELECT `p`.`Id` AS `IdEmpleado`, `p`.`Nombre` AS `NombreDelEmpleado`, `t`.`Descripcion` AS `TipoDeEmpleado`, `c1`.`NombreCat` AS `CategoriaDeEmpleado`, `c`.`Descripcion` AS `DescripcionContacto`, `c`.`IdTipoContacto` AS `TipoContacto`
+      FROM `ContactoPer` AS `c`
+      INNER JOIN `Persona` AS `p` ON `c`.`IdPersona` = `p`.`Id`
+      INNER JOIN `TipoPersona` AS `t` ON `p`.`IdTipoPersona` = `t`.`Id`
+      INNER JOIN `Ciudad` AS `c0` ON `p`.`IdCiudad` = `c0`.`Id`
+      INNER JOIN `CategoriaPer` AS `c1` ON `p`.`IdCategoria` = `c1`.`Id`
+      WHERE (`t`.`Descripcion` = 'Empleado') AND (`c1`.`NombreCat` = 'Vigilante')
+
+    public async Task<IEnumerable<object>> ContactoEmpleadoVigilante()
+    {
+        var mensaje = "listado de los contactos de los empleados que son vigilantes en la empresa".ToUpper();
+
+        var consulta = from c in _context.Contactopers
+                       join emp in _context.Personas on c.IdPersona equals emp.Id
+                       join e in _context.Tipopersonas on emp.IdTipoPersona equals e.Id
+                       join ci in _context.Ciudads on emp.IdCiudad equals ci.Id
+                       join cp in _context.Categoriapers on emp.IdCategoria equals cp.Id
+                       where e.Descripcion == "Empleado" && cp.NombreCat == "Vigilante"
+                       select new
+                       {
+                           IdEmpleado = emp.Id,
+                           NombreDelEmpleado = emp.Nombre,
+                           TipoDeEmpleado = e.Descripcion,
+                           CategoriaDeEmpleado = cp.NombreCat,
+                           DescripcionContacto = c.Descripcion,
+                           TipoContacto = c.IdTipoContacto
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 ```
 **Method**: `GET`
 
