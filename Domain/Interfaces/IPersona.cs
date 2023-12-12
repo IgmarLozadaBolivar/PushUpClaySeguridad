@@ -3,5 +3,5 @@ namespace Domain.Interfaces;
 
 public interface IPersona : IGeneric<Persona>
 {
-
+    Task<IEnumerable<object>> ListarEmpleados();
 }
