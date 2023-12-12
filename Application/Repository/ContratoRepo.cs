@@ -82,4 +82,30 @@ public class ContratoRepo : Generic<Contrato>, IContrato
 
         return resultadoFinal;
     }
+
+    public async Task<IEnumerable<object>> ContratosActivos()
+    {
+        var mensaje = "listado de contratos que se encuentran activos".ToUpper();
+
+        var consulta = from c in _context.Contratos
+                       join emp in _context.Personas on c.IdEmpleado equals emp.Id
+                       join cus in _context.Personas on c.IdCliente equals cus.Id
+                       join et in _context.Estados on c.IdEstado equals et.Id
+                       where et.Descripcion == "Activo"
+                       select new
+                       {
+                           NroContracto = c.Id,
+                           NombreDelCliente = cus.Nombre,
+                           NombreDelEmpleado = emp.Nombre
+                       };
+
+        var resultado = await consulta.ToListAsync();
+
+        var resultadoFinal = new List<object>
+        {
+            new { Msg = mensaje, DatosConsultados = resultado}
+        };
+
+        return resultadoFinal;
+    }
 }

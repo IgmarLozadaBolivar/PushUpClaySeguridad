@@ -109,4 +109,13 @@ public class ContratoController : BaseApiController
         var data = await unitOfWork.Contratos.ClientesCon5AñosDeAntiguedad();
         return mapper.Map<List<object>>(data);
     }
+
+    [HttpGet("ContratosActivos")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> ContratosActivos()
+    {
+        var data = await unitOfWork.Contratos.ContratosActivos();
+        return mapper.Map<List<object>>(data);
+    }
 }
