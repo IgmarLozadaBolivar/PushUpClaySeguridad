@@ -109,4 +109,13 @@ public class PersonaController : BaseApiController
         var data = await unitOfWork.Personas.ListarEmpleados();
         return mapper.Map<List<object>>(data);
     }
+
+    [HttpGet("ListarEmpleadosVigilantes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> ListarEmpleadosVigilantes()
+    {
+        var data = await unitOfWork.Personas.ListarEmpleadosVigilantes();
+        return mapper.Map<List<object>>(data);
+    }
 }
